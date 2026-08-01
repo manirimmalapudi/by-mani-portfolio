@@ -112,7 +112,7 @@
             padding: 120px 0 90px 0;
             text-align: center;
             background: linear-gradient(rgba(13, 14, 16, 0.75), rgba(13, 14, 16, 0.95)), 
-                        url('images/arch (1).jpg') center/cover no-repeat;
+                        url('Images/arch1.JPG') center/cover no-repeat;
         }
 
         .hero h1 {
@@ -218,7 +218,7 @@
             font-weight: 300;
         }
 
-        /* Gallery Layout */
+        /* Gallery Layout (Masonry Flow) */
         .gallery-tabs {
             display: flex;
             justify-content: center;
@@ -248,42 +248,103 @@
 
         .gallery-content {
             display: none;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
+            column-count: 3;
+            column-gap: 20px;
         }
 
         .gallery-content.active {
-            display: grid;
+            display: block;
         }
 
         .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 20px;
             position: relative;
             overflow: hidden;
-            border-radius: 3px;
+            border-radius: 4px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: all 0.4s ease;
+            cursor: pointer;
         }
-
-        .gallery-item:nth-child(3n+1) { aspect-ratio: 3/4; }
-        .gallery-item:nth-child(3n+2) { aspect-ratio: 1/1; }
-        .gallery-item:nth-child(3n+3) { aspect-ratio: 4/5; }
 
         .gallery-item img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            display: block;
             transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .gallery-item:hover {
-            transform: translateY(-6px);
+            transform: translateY(-5px);
             border-color: var(--accent-color);
         }
 
         .gallery-item:hover img {
-            transform: scale(1.06);
+            transform: scale(1.04);
+        }
+
+        /* Lightbox Fullscreen Popup Modal */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: zoomIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: #fff;
+            font-size: 2.2rem;
+            font-weight: 300;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease;
+            line-height: 1;
+            user-select: none;
+        }
+
+        .lightbox-close:hover {
+            color: var(--text-muted);
+            transform: scale(1.1);
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.92);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         /* Contact Section */
@@ -346,10 +407,17 @@
             letter-spacing: 1px;
         }
 
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.2rem; }
+        /* Mobile & Tablet Adjustments */
+        @media (max-width: 900px) {
+            .gallery-content { column-count: 2; }
             .about-grid, .contact-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .gallery-content { column-count: 1; }
+            .hero h1 { font-size: 2.2rem; }
             .nav-links { display: none; }
+            .lightbox-close { top: 15px; right: 20px; font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -384,7 +452,7 @@
             <p class="section-subtitle">Behind the lens</p>
             <div class="about-grid">
                 <div class="about-img">
-                    <img src="images/profile.jpg" alt="Manikanta Photographer Profile">
+                    <img src="Images/profile.jpeg" alt="Manikanta Photographer Profile">
                 </div>
                 <div class="about-text">
                     <p>Hi, I'm <strong>Manikanta</strong>.</p>
@@ -434,49 +502,55 @@
                 <button class="tab-btn" onclick="openCategory(event, 'others')">Others (10)</button>
             </div>
 
-            <!-- Portrait Photography (1-10) -->
+            <!-- Portrait Photography -->
             <div id="portrait" class="gallery-content active">
-                <div class="gallery-item"><img src="images/portrait (1).jpg" alt="Portrait 1"></div>
-                <div class="gallery-item"><img src="images/portrait (2).jpg" alt="Portrait 2"></div>
-                <div class="gallery-item"><img src="images/portrait (3).jpg" alt="Portrait 3"></div>
-                <div class="gallery-item"><img src="images/portrait (4).jpg" alt="Portrait 4"></div>
-                <div class="gallery-item"><img src="images/portrait (5).jpg" alt="Portrait 5"></div>
-                <div class="gallery-item"><img src="images/portrait (6).jpg" alt="Portrait 6"></div>
-                <div class="gallery-item"><img src="images/portrait (7).jpg" alt="Portrait 7"></div>
-                <div class="gallery-item"><img src="images/portrait (8).jpg" alt="Portrait 8"></div>
-                <div class="gallery-item"><img src="images/portrait (9).jpg" alt="Portrait 9"></div>
-                <div class="gallery-item"><img src="images/portrait (10).jpg" alt="Portrait 10"></div>
+                <div class="gallery-item"><img src="Images/portrait1.jpeg" alt="Portrait 1"></div>
+                <div class="gallery-item"><img src="Images/portrait2.jpeg" alt="Portrait 2"></div>
+                <div class="gallery-item"><img src="Images/portrait3.jpeg" alt="Portrait 3"></div>
+                <div class="gallery-item"><img src="Images/portrait4.jpg" alt="Portrait 4"></div>
+                <div class="gallery-item"><img src="Images/portrait5.jpg" alt="Portrait 5"></div>
+                <div class="gallery-item"><img src="Images/portrait6.jpg" alt="Portrait 6"></div>
+                <div class="gallery-item"><img src="Images/portrait7.jpg" alt="Portrait 7"></div>
+                <div class="gallery-item"><img src="Images/portrait8.JPG" alt="Portrait 8"></div>
+                <div class="gallery-item"><img src="Images/portrait9.JPG" alt="Portrait 9"></div>
+                <div class="gallery-item"><img src="Images/portrait10.jpeg" alt="Portrait 10"></div>
             </div>
 
-            <!-- Architectural (1-10) -->
+            <!-- Architectural Photography -->
             <div id="architectural" class="gallery-content">
-                <div class="gallery-item"><img src="images/arch (1).jpg" alt="Arch 1"></div>
-                <div class="gallery-item"><img src="images/arch (2).jpg" alt="Arch 2"></div>
-                <div class="gallery-item"><img src="images/arch (3).jpg" alt="Arch 3"></div>
-                <div class="gallery-item"><img src="images/arch (4).jpg" alt="Arch 4"></div>
-                <div class="gallery-item"><img src="images/arch (5).jpg" alt="Arch 5"></div>
-                <div class="gallery-item"><img src="images/arch (6).jpg" alt="Arch 6"></div>
-                <div class="gallery-item"><img src="images/arch (7).jpg" alt="Arch 7"></div>
-                <div class="gallery-item"><img src="images/arch (8).jpg" alt="Arch 8"></div>
-                <div class="gallery-item"><img src="images/arch (9).jpg" alt="Arch 9"></div>
-                <div class="gallery-item"><img src="images/arch (10).jpg" alt="Arch 10"></div>
+                <div class="gallery-item"><img src="Images/arch1.JPG" alt="Arch 1"></div>
+                <div class="gallery-item"><img src="Images/arch2.JPG" alt="Arch 2"></div>
+                <div class="gallery-item"><img src="Images/arch3.JPG" alt="Arch 3"></div>
+                <div class="gallery-item"><img src="Images/arch4.JPG" alt="Arch 4"></div>
+                <div class="gallery-item"><img src="Images/arch5.jpeg" alt="Arch 5"></div>
+                <div class="gallery-item"><img src="Images/arch6.JPG" alt="Arch 6"></div>
+                <div class="gallery-item"><img src="Images/arch7.JPG" alt="Arch 7"></div>
+                <div class="gallery-item"><img src="Images/arch8.JPG" alt="Arch 8"></div>
+                <div class="gallery-item"><img src="Images/arch9.JPG" alt="Arch 9"></div>
+                <div class="gallery-item"><img src="Images/arch10.JPG" alt="Arch 10"></div>
             </div>
 
-            <!-- Others (1-10) -->
+            <!-- Others -->
             <div id="others" class="gallery-content">
-                <div class="gallery-item"><img src="images/other (1).jpg" alt="Other 1"></div>
-                <div class="gallery-item"><img src="images/other (2).jpg" alt="Other 2"></div>
-                <div class="gallery-item"><img src="images/other (3).jpg" alt="Other 3"></div>
-                <div class="gallery-item"><img src="images/other (4).jpg" alt="Other 4"></div>
-                <div class="gallery-item"><img src="images/other (5).jpg" alt="Other 5"></div>
-                <div class="gallery-item"><img src="images/other (6).jpg" alt="Other 6"></div>
-                <div class="gallery-item"><img src="images/other (7).jpg" alt="Other 7"></div>
-                <div class="gallery-item"><img src="images/other (8).jpg" alt="Other 8"></div>
-                <div class="gallery-item"><img src="images/other (9).jpg" alt="Other 9"></div>
-                <div class="gallery-item"><img src="images/other (10).jpg" alt="Other 10"></div>
+                <div class="gallery-item"><img src="Images/other1.jpeg" alt="Other 1"></div>
+                <div class="gallery-item"><img src="Images/other2.JPG" alt="Other 2"></div>
+                <div class="gallery-item"><img src="Images/other3.JPG" alt="Other 3"></div>
+                <div class="gallery-item"><img src="Images/other4.jpeg" alt="Other 4"></div>
+                <div class="gallery-item"><img src="Images/other5.jpeg" alt="Other 5"></div>
+                <div class="gallery-item"><img src="Images/other6.jpeg" alt="Other 6"></div>
+                <div class="gallery-item"><img src="Images/other7.jpeg" alt="Other 7"></div>
+                <div class="gallery-item"><img src="Images/other8.JPG" alt="Other 8"></div>
+                <div class="gallery-item"><img src="Images/other9.JPG" alt="Other 9"></div>
+                <div class="gallery-item"><img src="Images/other10.JPG" alt="Other 10"></div>
             </div>
         </div>
     </section>
+
+    <!-- Lightbox Fullscreen Popup Modal -->
+    <div id="lightbox" class="lightbox-modal">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" alt="Enlarged Portfolio View">
+    </div>
 
     <!-- Contact & Enquiry Section -->
     <section id="contact">
@@ -500,7 +574,7 @@
                     </div>
                 </div>
 
-                <form class="contact-form" action="https://formspree.io/f/manirimmalapudi6939@gmail.com" method="POST">
+                <form class="contact-form" action="https://formspree.io/f/xgogjpno" method="POST">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" required placeholder="Your full name">
@@ -537,6 +611,7 @@
     </footer>
 
     <script>
+        // Tab switching logic
         function openCategory(evt, categoryName) {
             var i, gallerycontent, tablinks;
             gallerycontent = document.getElementsByClassName("gallery-content");
@@ -550,6 +625,38 @@
             document.getElementById(categoryName).classList.add("active");
             evt.currentTarget.classList.add("active");
         }
+
+        // Lightbox Maximizer Logic
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const closeBtn = document.querySelector('.lightbox-close');
+
+        // Add click listener to all gallery images dynamically
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            img.addEventListener('click', function() {
+                lightboxImg.src = this.src;
+                lightbox.classList.add('active');
+            });
+        });
+
+        // Close when clicking the 'X' button
+        closeBtn.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+        });
+
+        // Close when clicking outside the image on the backdrop
+        lightbox.addEventListener('click', (e) => {
+            if (e.target !== lightboxImg) {
+                lightbox.classList.remove('active');
+            }
+        });
+
+        // Close when pressing the 'Esc' key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                lightbox.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
